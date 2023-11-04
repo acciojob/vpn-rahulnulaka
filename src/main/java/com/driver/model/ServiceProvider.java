@@ -5,19 +5,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "serviceProvider")
 public class ServiceProvider {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    String name;
+    private String name;
+
+    @JoinColumn
+    @ManyToOne
+    private Admin admin;
+
+
+    @ManyToMany(mappedBy = "serviceProviderList",cascade = CascadeType.ALL)
+    private List<User> users=new ArrayList<>();
+
+    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
+    private List<Country> countryList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
+    private List<Connection> connectionList=new ArrayList<>();
+
+    public ServiceProvider() {
+    }
+
+    public ServiceProvider(int id, String name, Admin admin, List<User> users, List<Country> countryList, List<Connection> connectionList) {
+        this.id = id;
+        this.name = name;
+        this.admin = admin;
+        this.users = users;
+        this.countryList = countryList;
+        this.connectionList = connectionList;
+    }
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -29,36 +55,20 @@ public class ServiceProvider {
         this.name = name;
     }
 
-    public ServiceProvider() {
-    }
-
-    public ServiceProvider(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public List<Connection> getConnectionList() {
-        return connectionList;
-    }
-
-    public void setConnectionList(List<Connection> connectionList) {
-        this.connectionList = connectionList;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
     public Admin getAdmin() {
         return admin;
     }
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public List<Country> getCountryList() {
@@ -69,19 +79,11 @@ public class ServiceProvider {
         this.countryList = countryList;
     }
 
-    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
-    private List<Connection> connectionList=new ArrayList<>();
+    public List<Connection> getConnectionList() {
+        return connectionList;
+    }
 
-
-    @ManyToMany(mappedBy = "serviceProviderList",cascade = CascadeType.ALL)
-    private List<User> userList=new ArrayList<>();
-
-
-    @ManyToOne
-    @JoinColumn
-    private Admin admin;
-
-
-    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
-    private List<Country> countryList=new ArrayList<>();
+    public void setConnectionList(List<Connection> connectionList) {
+        this.connectionList = connectionList;
+    }
 }
